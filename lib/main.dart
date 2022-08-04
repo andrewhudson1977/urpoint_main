@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
               icon: const Icon(Icons.auto_fix_high),
               onPressed: () async {
                 // 1. load new website url
-                controller.loadUrl('https://youtube.com');
+                controller.loadUrl('https://www.ur-cards.com');
 
                 // 2. get current website url
                 // final url = await controller.currentUrl();
@@ -48,7 +48,7 @@ class _MainPageState extends State<MainPage> {
         ),
         body: WebView(
           javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: 'https://www.amazon.com/',
+          initialUrl: 'https://www.ur-point.com/',
           onWebViewCreated: (controller) {
             this.controller = controller;
           },
