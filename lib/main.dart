@@ -22,6 +22,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: PreferredSize(
+          child: Container(),
+          preferredSize: Size.fromHeight(0.0),
+        ),
         body: WebView(
           javascriptMode: JavascriptMode.unrestricted,
           initialUrl: 'https://www.ur-point.com/',
