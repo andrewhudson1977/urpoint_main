@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
@@ -13,14 +10,9 @@ import 'package:is_first_run/is_first_run.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  var db = FirebaseFirestore.instance;
+
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options:
-  DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
   //Remove this method to stop OneSignal Debugging
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
@@ -50,16 +42,9 @@ String getPlatform(){
 }
 
 Future<String> getUserInfo(var userid) async {
-  // gets user device information and sends it to the firestore database
   // Gets the user platform
   var platform = getPlatform();
 
-  //Generates a unique ID for the firestore database
-  var db = FirebaseFirestore.instance;
-  var UID = db
-      .collection('name')
-      .doc()
-      .id;
   // Gets the OneSignal PlayerID
   await Future.doWhile(() async {
     var status = await OneSignal.shared.getDeviceState();
@@ -77,31 +62,28 @@ Future<String> getUserInfo(var userid) async {
   if(playerId == null){
     playerId = "null";
   }
-  var user = User(playerId, platform, UID, userid);
+  var user = User(playerId, platform, userid);
   var usermap = user.toMap();
-  // Sends user info to FireStore database.
-  db.collection("users").doc(UID).set(usermap);
+
   // Saves user info to users  local storage
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var data = json.encode(usermap);
   prefs.setString('userdata', data);
-  var url = "https://www.ur-point.com/firestore.php?userid=$userid&platform=$platform&firestoreid=$UID&playerid=$playerId";
+  var url = "https://www.ur-point.com/firestore.php?userid=$userid&platform=$platform&playerid=$playerId";
   return url;
 }
 
 class User {
   String player_id;
   String platform;
-  String firebaseID;
   String userId;
   //constructor
-  User(this.player_id, this.platform, this.firebaseID, this.userId);
+  User(this.player_id, this.platform, this.userId);
 
   Map<String, String> toMap() {
     return {
       "player_id": player_id,
       "platform": platform,
-      "firebaseID": firebaseID,
       "userId" : userId
     };
   }
