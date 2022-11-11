@@ -108,6 +108,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   late WebViewController controller;
   bool idGot = false;
+  bool isLoading = false;
 
   get homeUrl => 'https://www.ur-point.com/index.php';
 
@@ -124,6 +125,7 @@ class _MainPageState extends State<MainPage> {
             },
 
             onPageStarted: (url) async {
+              isLoading = true;
               print(idGot);
               if (url == homeUrl && idGot == false) {
                 controller.loadUrl(userIdUrl);
@@ -138,7 +140,9 @@ class _MainPageState extends State<MainPage> {
                 print(senderUrl);
                 controller.loadUrl(senderUrl);
               }
+              isLoading = false;
             },
-          )
-      );
+          ),
+
+        );
 }
