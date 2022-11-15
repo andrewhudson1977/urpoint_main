@@ -199,7 +199,7 @@ class _CameraPageState extends State<CameraPage> {
 }
 
 void _sendLinkToMain(BuildContext context) {
-  String linkToSend = 
+  String linkToSend = ""; 
 }
 
 class _MainPageState extends State<MainPage> {
